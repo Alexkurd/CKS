@@ -79,6 +79,42 @@ and firt Node  --authorization-mode=Node
 
 ### Encrypt secrets
 
+## Open policy agent(OPA)
+Gatekeeper added as CRD on AdmissionController level.
+Create Kind.ConstraintTemplate name: k8strustedimages and add kind: K8sTrustedImages
+Template should describe general conditions without targets using rego syntax.
+
+### Trusted images
+
+```
+ violation[{"msg": msg}] {
+          image := input.review.object.spec.containers[_].image
+          not startswith(image, "docker.io/")
+          not startswith(image, "k8s.gcr.io/")
+          msg := "not trusted image!"
+        }
+```
+### Required labels
+```
+ violation[{"msg": msg, "details": {"missing_labels": missing}}] {
+          provided := {label | input.review.object.metadata.labels[label]}
+          required := {label | label := input.parameters.labels[_]}
+          missing := required - provided
+          count(missing) > 0
+          msg := sprintf("you must provide labels: %v", [missing])
+        }
+```
+### Minimal replica count
+```
+violation[{"msg": msg, "details": {"missing_replicas": missing}}] {
+          provided := input.review.object.spec.replicas
+          required := input.parameters.min
+          missing := required - provided
+          missing > 0
+          msg := sprintf("you must provide %v more replicas", [missing])
+        }
+```
+
 ## Supply chain
 
 ### Image footprint
@@ -88,12 +124,21 @@ and firt Node  --authorization-mode=Node
 - Set noroot user for app. // RUN addgroup -S appgroup && adduser -S appuser -G appgroup -h /home/appuser && USER appuser
 - Make readonly filesystem. // RUN chmod a-w /etc
 - No shell access. // RUN rm -rf /bin/*
+### Vulnerability scan
+Clair
+AIO deployment with api.
 
+Trivy
+```
+docker run ghcr.io/aquasecurity/trivy:latest image nginx:latest
+```
 ### Static analysis
 
 OPA/Conftest
 ```
 docker run --rm -v $(pwd):/project openpolicyagent/conftest test Dockerfile --all-namespaces
+```
+```
 docker run --rm -v $(pwd):/project openpolicyagent/conftest test deploy.yaml
 ```
 
