@@ -80,3 +80,23 @@ and firt Node  --authorization-mode=Node
 ### Encrypt secrets
 
 
+## Audit logs
+
+Add params to apiserver.yaml
+```
+    - --audit-policy-file=/etc/kubernetes/audit/policy.yaml       # add
+    - --audit-log-path=/etc/kubernetes/audit/logs/audit.log       # add
+    - --audit-log-maxsize=500                                     # add
+    - --audit-log-maxbackup=5                                     # add
+...
+  volumeMounts:
+  - mountPath: /etc/kubernetes/audit      # add
+    name: audit                           # add
+  ...
+  volumes:
+  - hostPath:                               # add
+      path: /etc/kubernetes/audit           # add
+      type: DirectoryOrCreate               # add
+    name: audit                             # add
+```
+
