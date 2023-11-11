@@ -79,6 +79,16 @@ and firt Node  --authorization-mode=Node
 
 ### Encrypt secrets
 
+## Supply chain
+
+### Image footprint
+
+- Make small image with minimal set of apps. Use multi-stage builds.
+- Set image versions. Don't use latest.
+- Set noroot user for app. //RUN addgroup -S appgroup && adduser -S appuser -G appgroup -h /home/appuser && USER appuser
+- Make readonly filesystem. //RUN chmod a-w /etc
+- No shell access. RUN rm -rf /bin/*
+
 ## Runtime security
 
 ### Strace
