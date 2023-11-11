@@ -79,6 +79,19 @@ and firt Node  --authorization-mode=Node
 
 ### Encrypt secrets
 
+## Runtime security
+
+### Strace
+
+strace curl //create new process
+
+strace -p pid //attach to the process
+
+strace -p 528 -cw //collect summary
+
+### Falco
+
+/etc/falco/rules.d
 
 ## Audit logs
 
