@@ -1,5 +1,17 @@
 # CKS
 
+### Tips after passing exam
+
+The main problem is time. So check which questions can you do faster and choose tools according.
+Check beforehand allowed manuals to copy-paste templates(E.g. secrets in pods, networkpolicy, apparmor).
+Scroll in browser is lagging, so search the words.
+When you want to flag the question `save result to file` for later you should at least create the output file.
+Holding arrow buttons is just one click.
+Nano maybe easier for most questions, but `Ctrl+W` or `Ctrl+Alt+W` (Search text) is not working. 
+Vi is default editor for `k edit resource`. Use `dd` to delete string. Use `I` instead of `Insert` to change mode.
+Vi wraps strings by default, so it's usage for falco rules is better.
+Trivy version is old(~0.19), so `trivy k8s pods --report summary -n kube-system` is not working.
+
 ### Network policies
 
 Deny all except DNS as default.
